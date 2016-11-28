@@ -1,0 +1,246 @@
+#include<stdio.h>
+#include<stack>
+using namespace std;
+
+long i,j,p,q,print,sr[10000][250],dic,ma[10000];
+char c,d,st[10000][250];
+bool sl[10000][250];
+stack<int>stk;
+
+void dfs(long a)
+{
+	print=0;
+
+	for(i=0;i<a;i++)
+	{
+		for(j=0;st[i][j];j++)
+		{
+			if(sl[i][j])
+			{
+				d=st[i][j];
+				stk.push(i);
+				stk.push(j);
+				sl[i][j]=0;
+				print++;
+				while(!stk.empty())
+				{
+					q=stk.top();
+					stk.pop();
+					p=stk.top();
+					stk.pop();
+					st[p][q]=1;
+					sr[p][q]=print;
+					if(st[p][q+1]==d)
+					{
+						stk.push(p);
+						stk.push(q+1);
+						sl[p][q+1]=0;
+					}
+					if(st[p][q-1]==d)
+					{
+						stk.push(p);
+						stk.push(q-1);
+						sl[p][q-1]=0;
+					}
+					if(st[p-1][q+1]==d)
+					{
+						stk.push(p-1);
+						stk.push(q+1);
+						sl[p-1][q+1]=0;
+					}
+					if(st[p-1][q]==d)
+					{
+						stk.push(p-1);
+						stk.push(q);
+						sl[p-1][q]=0;
+					}
+					if(st[p-1][q-1]==d)
+					{
+						stk.push(p-1);
+						stk.push(q-1);
+						sl[p-1][q-1]=0;
+					}
+					if(st[p+1][q]==d)
+					{
+						stk.push(p+1);
+						stk.push(q);
+						sl[p+1][q]=0;
+					}
+					if(st[p+1][q-1]==d)
+					{
+						stk.push(p+1);
+						stk.push(q-1);
+						sl[p+1][q-1]=0;
+					}
+					if(st[p+1][q+1]==d)
+					{
+						stk.push(p+1);
+						stk.push(q+1);
+						sl[p+1][q+1]=0;
+					}
+				}
+			}
+		}
+	}
+}
+
+int main()
+{
+    long max;
+	i=j=0;
+	while(c=getchar())
+	{
+		if(c==' ')
+			continue;
+		else
+			if(c=='\n')
+			{
+				st[i][j]=0;
+				i++;
+				j=0;
+			}
+			else
+				if(c=='%' || c==EOF)
+				{
+					dfs(i);
+
+					max=0;
+					for(j=0;j<i;j++)
+					{
+						if(max<sr[j][0])
+							max=sr[j][0];
+					}
+					print=0;
+						if(max<10)
+							ma[print]=1;
+						else
+							if(max<100)
+								ma[print]=2;
+							else
+								if(max<1000)
+									ma[print]=3;
+								else
+									if(max<10000)
+										ma[print]=4;
+									else
+										if(max<100000)
+											ma[print]=5;
+										else
+											if(max<1000000)
+												ma[print]=6;
+											else
+												if(max<10000000)
+													ma[print]=7;
+												else
+													ma[print]=8;					
+					for(print=1;st[0][print];print++)	
+					{
+						max=0;
+						for(j=0;j<i;j++)
+						{
+							if(max<sr[j][print])
+								max=sr[j][print];
+						}
+						if(max<10)
+							ma[print]=2;
+						else
+							if(max<100)
+								ma[print]=3;
+							else
+								if(max<1000)
+									ma[print]=4;
+								else
+									if(max<10000)
+										ma[print]=5;
+									else
+										if(max<100000)
+											ma[print]=6;
+										else
+											if(max<1000000)
+												ma[print]=7;
+											else
+												if(max<10000000)
+													ma[print]=8;
+												else
+													ma[print]=9;
+					}
+
+					for(j=0;j<i;j++)
+					{
+						print=0;
+							if(sr[j][print]<10)
+								dic=ma[print]-1;
+							else
+								if(sr[j][print]<100)
+									dic=ma[print]-2;
+								else
+									if(sr[j][print]<1000)
+										dic=ma[print]-3;
+									else
+										if(sr[j][print]<10000)
+											dic=ma[print]-4;
+									else
+										if(sr[j][print]<100000)
+											dic=ma[print]-5;
+										else
+											if(sr[j][print]<1000000)
+												dic=ma[print]-6;
+											else
+												if(sr[j][print]<10000000)
+													dic=ma[print]-7;
+												else
+													dic=ma[print]-8;
+
+							for(p=0;p<dic;p++)
+								printf(" ");
+						if(sr[j][0])
+							printf("%ld",sr[j][0]);
+
+						for(print=1;st[j][print];print++)
+						{
+							if(sr[j][print]<10)
+								dic=ma[print]-1;
+							else
+								if(sr[j][print]<100)
+									dic=ma[print]-2;
+								else
+									if(sr[j][print]<1000)
+										dic=ma[print]-3;
+									else
+										if(sr[j][print]<10000)
+											dic=ma[print]-4;
+									else
+										if(sr[j][print]<100000)
+											dic=ma[print]-5;
+										else
+											if(sr[j][print]<1000000)
+												dic=ma[print]-6;
+											else
+												if(sr[j][print]<10000000)
+													dic=ma[print]-7;
+												else
+													dic=ma[print]-8;
+
+
+							for(p=0;p<dic;p++)
+								printf(" ");
+							printf("%ld",sr[j][print]);
+						}
+						printf("\n");
+					}
+					printf("%c\n",37);
+					if(c==EOF)
+						break;
+					else
+						getchar();
+					j=0;
+					i=0;
+				}
+				else
+				{
+					st[i][j]=c;
+					sl[i][j++]=1;
+				}
+	}
+	return 0;
+}
